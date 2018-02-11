@@ -154,7 +154,7 @@ $ pytest --cov=munge --cov-report=html tests/
 HTML coverage report can be found in `htmlcov/index.html`. Currently the code is 93% covered.
 
 ### Auto generated documentation using Sphinx
-Documentation can be found in `_build/index.html`
+Documentation can be found in `docs/index.html`. Open this in a browser
 
 ### Future Work
 * More exception handling
