@@ -11,7 +11,8 @@
 $ conda install --yes --file requirements.txt
 ```
 
-2. `config.json`
+2. **config.json**
+
 Download the data and put it in a directory and make changes to `config.json` accordingly. Currently I have my data in the `data`
 (git ignored) folder and hence the content of the file is:
 
@@ -61,10 +62,10 @@ the contours as patches overlaid on them. For trained sonographers, this gives a
 correct or not.
 
 Apart from the images, I have also included two plots
-1. Relative average intensity: This will give a rough indicator of whether the region marked is correct or not assuming that
+1. **Relative average intensity**: This will give a rough indicator of whether the region marked is correct or not assuming that
 in this case, the average intensity of the myocardium area should lie in some range. If the average intensity does not lie in
 this assumed range, we can suspect that the annotater has marked it incorrectly.
-2. Area of contour in sq.mm: As each study is a time series, contraction/dilation of the valve can be confirmed with a
+2. **Area of contour in sq.mm**: As each study is a time series, contraction/dilation of the valve can be confirmed with a
 sinusoidal/semi-sinusoidal wave. If the marked area is wrong, we can find out using this plot.
 
 (The above plots are included just as a sample to make a point that, some medical information like these can be incorporated
@@ -126,7 +127,7 @@ is random enough to be fed into a network.
 3. Given the pipeline you have built, can you see any deficiencies that you would change if you had more time? If not, can you
 think of any improvements/enhancements to the pipeline that you could build in?
     * Could have used open source code for generating the splits. Tried `keras.preprocessing.image.ImageDataGenerator` but in our
-    case the data points are instances of `DataElement` class which the class could not handle
+    case the data points are instances of `DataElement`, which the class could not handle
     * Even though I have used `yield` wherever possible, for huge datasets, need to refactor the code such that it works in a
     parallel manner
     * Refer [Future Work](https://github.com/srivathsapv/dicom-munge#future-work)
@@ -162,3 +163,4 @@ Documentation can be found in `docs/index.html`. Open this in a browser
 * Data cleaning - Adaptive Histogram Equalization/Mean Normalization
 * Integration with LogDNA for better log monitoring
 * Unit tests are not exhaustive. Just the critical functionality is tested. More coverage can be added in the future.
+* Dockerize the app
