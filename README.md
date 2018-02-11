@@ -158,6 +158,7 @@ Documentation can be found in `docs/index.html`. Open this in a browser
 
 ### Future Work
 * More exception handling
+* Performance testing
 * Data cleaning - Adaptive Histogram Equalization/Mean Normalization
 * Integration with LogDNA for better log monitoring
 * Unit tests are not exhaustive. Just the critical functionality is tested. More coverage can be added in the future.
