@@ -1,0 +1,208 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Dataset &#8212; Munge 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="DataElement" href="dataelement.html" />
+    <link rel="prev" title="Welcome to Munge’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-munge.Dataset">
+<span id="dataset"></span><h1>Dataset<a class="headerlink" href="#module-munge.Dataset" title="Permalink to this headline">¶</a></h1>
+<p>Class to represent a dataset as a whole or for each study</p>
+<dl class="class">
+<dt id="munge.Dataset.Dataset">
+<em class="property">class </em><code class="descclassname">munge.Dataset.</code><code class="descname">Dataset</code><span class="sig-paren">(</span><em>config_file='config.json'</em><span class="sig-paren">)</span><a class="headerlink" href="#munge.Dataset.Dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Dataset class can be instantiated with the following args</p>
+<ul class="simple">
+<li><strong>parameters</strong>, <strong>types</strong>, <strong>return</strong> and <strong>return types</strong>:</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config_file</strong> (<em>string</em>) – full path of the application config file</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="munge.Dataset.Dataset.asarray">
+<code class="descname">asarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#munge.Dataset.Dataset.asarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the array representation of all the data points in this dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">array of data and labels of this dataset</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="munge.Dataset.Dataset.get_all">
+<code class="descname">get_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#munge.Dataset.Dataset.get_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps the images with the contours and returns a generator with data points</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">generator of instances of <code class="docutils literal"><span class="pre">DataElement</span></code> having the corresponding image and contour</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="munge.Dataset.Dataset.get_by_study">
+<code class="descname">get_by_study</code><span class="sig-paren">(</span><em>patient_id</em><span class="sig-paren">)</span><a class="headerlink" href="#munge.Dataset.Dataset.get_by_study" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps the images with contours and returns a generator with data points, for the given study</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>patient_id</strong> – unique ID of the study</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">generator of instances of <code class="docutils literal"><span class="pre">DataElement</span></code> having the corresponding image and contour, for the given study</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="munge.Dataset.Dataset.plot_verification_for_study">
+<code class="descname">plot_verification_for_study</code><span class="sig-paren">(</span><em>patiend_id</em>, <em>filename=None</em>, <em>rows=5</em>, <em>columns=5</em><span class="sig-paren">)</span><a class="headerlink" href="#munge.Dataset.Dataset.plot_verification_for_study" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots a series of images with the corresponding contour patches for the given study</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>patient_id</strong> – unique ID of the study</li>
+<li><strong>filename</strong> – filename to save the plot in</li>
+<li><strong>rows</strong> – number of rows in the plot</li>
+<li><strong>columns</strong> – number of columns in the plot</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="munge.Dataset.Dataset.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><em>patient_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#munge.Dataset.Dataset.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Dict representation of the dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Dict having id, dcm_path and contour_path attributes of the data points in this dataset</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Munge</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataelement.html">DataElement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataloader.html">DataLoader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to Munge’s documentation!</a></li>
+      <li>Next: <a href="dataelement.html" title="next chapter">DataElement</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Srivathsa Pasumarthi.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/dataset.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,6 @@
+{
+    "dicom_path_template": "data/dicoms/{}/{}.dcm",
+    "icontour_dir_template": "data/contourfiles/{}/i-contours/",
+    "ocontour_dir_template": "data/contourfiles/{}/o-contours/",
+    "link_file_path": "data/link.csv"
+}

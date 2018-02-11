@@ -1,0 +1,198 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>DataElement &#8212; Munge 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="DataLoader" href="dataloader.html" />
+    <link rel="prev" title="Dataset" href="dataset.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-munge.DataElement">
+<span id="dataelement"></span><h1>DataElement<a class="headerlink" href="#module-munge.DataElement" title="Permalink to this headline">¶</a></h1>
+<p>Class to represent a data point in the dataset with relevant features and methods</p>
+<dl class="class">
+<dt id="munge.DataElement.DataElement">
+<em class="property">class </em><code class="descclassname">munge.DataElement.</code><code class="descname">DataElement</code><span class="sig-paren">(</span><em>dicom_path</em>, <em>contour_path</em><span class="sig-paren">)</span><a class="headerlink" href="#munge.DataElement.DataElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>DataElement class can be instantiated with the following args</p>
+<ul class="simple">
+<li><strong>parameters</strong>, <strong>types</strong>, <strong>return</strong> and <strong>return types</strong>:</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dicom_path</strong> (<em>string</em>) – full path of the DICOM image</li>
+<li><strong>contour_path</strong> (<em>string</em>) – full path of the corresponding contour file</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="munge.DataElement.DataElement.asarray">
+<code class="descname">asarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#munge.DataElement.DataElement.asarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the DataElement in the form of (data, label)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">array of data and labels</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="munge.DataElement.DataElement.get_area_in_sqmm">
+<code class="descname">get_area_in_sqmm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#munge.DataElement.DataElement.get_area_in_sqmm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the area of the contour in sq.mm. The conversion is done using the <code class="docutils literal"><span class="pre">PixelSpacing</span></code> tag of the DICOM image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">area in sq.mm</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="munge.DataElement.DataElement.get_image_contour_overlay">
+<code class="descname">get_image_contour_overlay</code><span class="sig-paren">(</span><em>window=30, patch_color=[255, 0, 0]</em><span class="sig-paren">)</span><a class="headerlink" href="#munge.DataElement.DataElement.get_image_contour_overlay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a bounding box around the contour with and without the contour overlaid (horizontally stacked).
+This will be useful for manual verification of the annotation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>window</strong> – size of bounding box required around the marked contour</li>
+<li><strong>patch_color</strong> – [r, g, b] value of the color in which the patch should be overlaid</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">horizontally stacked array with left image being original and the right with the patch drawn</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="munge.DataElement.DataElement.get_roi_avg_relative_intensity">
+<code class="descname">get_roi_avg_relative_intensity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#munge.DataElement.DataElement.get_roi_avg_relative_intensity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the relative intensity (%) of the ROI. Relative intensity is w.r.t the maximum intensity of the image</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">average intensity in percentage</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Munge</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">Dataset</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">DataElement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataloader.html">DataLoader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="dataset.html" title="previous chapter">Dataset</a></li>
+      <li>Next: <a href="dataloader.html" title="next chapter">DataLoader</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Srivathsa Pasumarthi.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/dataelement.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
