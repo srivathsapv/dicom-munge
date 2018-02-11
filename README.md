@@ -22,6 +22,11 @@ Download the data and put it in a directory and make changes to `config.json` ac
 }
 ```
 
+### Jupyter Notebook
+
+The usage of the package is easily illustrated in [this](https://github.com/srivathsapv/dicom-munge/blob/master/Usage.ipynb)
+Jupyter Notebook. Detailed explanation is also given below.
+
 ### Part 1: Parsing the DICOM images and Contour Files
 
 #### Usage
