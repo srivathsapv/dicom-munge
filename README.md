@@ -1,4 +1,5 @@
 # Munge
+![travis](https://travis-ci.org/srivathsapv/dicom-munge.svg?branch=master)
 
 ## Module for DICOM data preprocessing and loading
 
