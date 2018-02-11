@@ -46,11 +46,8 @@ class Dataset(object):
 
         for patient_id, original_id in link.items():
             mapping_for_study = self._get_mapping_by_study(patient_id, original_id)
-            #all_mapping.append([mapping for mapping in mapping_for_study])
             yield from mapping_for_study
 
-        # flattened = [mapping for study_mapping in all_mapping for mapping in study_mapping]
-        # yield from flattened
 
     def get_by_study(self, patient_id):
         """
@@ -70,8 +67,6 @@ class Dataset(object):
 
             yield DataElement(dicom_path, contour_path)
 
-        #self.current_dataset = dataset
-        #yield from dataset
 
     def _get_mapping_by_study(self, patient_id, original_id):
         """
@@ -88,7 +83,6 @@ class Dataset(object):
                 'contour_path': contour_dir + contour_file
             }
 
-        #yield from mapping
 
     def plot_verification_for_study(self, patiend_id, filename=None, rows=5, columns=5):
         """
