@@ -63,7 +63,7 @@ sinusoidal/semi-sinusoidal wave. If the marked area is wrong, we can find out us
 (The above plots are included just as a sample to make a point that, some medical information like these can be incorporated
 to verify the annotation and to quickly identify mistakes if any)
 
-<insert image>
+![verification](https://user-images.githubusercontent.com/1017519/36071843-307ce492-0ee3-11e8-82ec-ca41fb2a0a9a.png)
 
 2. What changes did you make to the code, if any, in order to integrate it into our production code base?
 
@@ -94,7 +94,7 @@ DataLoader.plot_random_epoch(train_data)
 not, is there anything that you can imagine changing in the future?
 
 * Added `DataLoader` class to load the dataset according to epochs and batch size (for more details refer documentation)
-* Refer <enhancements>
+* Refer [Future Work](https://github.com/srivathsapv/dicom-munge#future-work)
 
 2. How do you/did you verify that the pipeline was working correctly?
 
@@ -108,7 +108,7 @@ have asserted whether, for the given epoch and batch size, the data is split cor
 For this purpose I have written a function in the `DataLoader` class which will randomly select an epoch and plot the batch wise
 images that were split. This will give a visual indicator that the data split is indeed random.
 
-<insert image>
+![verification](https://user-images.githubusercontent.com/1017519/36071845-34fd66e0-0ee3-11e8-9850-3824e4ab7573.png)
 
 **Manual verification of randomness by log file:**
 
@@ -122,7 +122,7 @@ think of any improvements/enhancements to the pipeline that you could build in?
     case the data points are instances of `DataElement` class which the class could not handle
     * Even though I have used `yield` wherever possible, for huge datasets, need to refactor the code such that it works in a
     parallel manner
-    * Refer <enhancements>
+    * Refer [Future Work](https://github.com/srivathsapv/dicom-munge#future-work)
 
 ### Package testing
 ```
