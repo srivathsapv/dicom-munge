@@ -130,6 +130,8 @@ think of any improvements/enhancements to the pipeline that you could build in?
     * Refer [Future Work](https://github.com/srivathsapv/dicom-munge#future-work)
 
 ### Package testing
+To run the tests and generate coverage report, run the following command
+
 ```
 $ pytest --cov=munge --cov-report=html tests/
 ```
