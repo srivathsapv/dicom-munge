@@ -1,6 +1,7 @@
 # Munge
 ![travis](https://travis-ci.org/srivathsapv/dicom-munge.svg?branch=master)
 ![coverage](https://github.com/srivathsapv/dicom-munge/blob/master/coverage.svg)
+![docs](http://dicom-munge.readthedocs.io/en/latest/?badge=latest)
 
 ## Module for DICOM data preprocessing and loading
 
@@ -155,7 +156,7 @@ $ pytest --cov=munge --cov-report=html tests/
 HTML coverage report can be found in `htmlcov/index.html`. Currently the code is 93% covered.
 
 ### Auto generated documentation using Sphinx
-Documentation can be found in `docs/index.html`. Open this in a browser
+Documentation can be found [here](https://github.com/srivathsapv/dicom-munge).
 
 ### Future Work
 * More exception handling
