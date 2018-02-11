@@ -112,7 +112,7 @@ images that were split. This will give a visual indicator that the data split is
 
 **Manual verification of randomness by log file:**
 
-The call to the function `load_train_data` will write to the log file (`data_loader.log`), the UUID of the `DataElement`
+The call to the function `load_train_data` will write to the [log file](https://github.com/srivathsapv/dicom-munge/blob/master/data_loader.log), the UUID of the `DataElement`
 instance in each epoch, in each iteration. By making sure that the UUIDs are different, we can ensure that the training data
 is random enough to be fed into a network.
 
