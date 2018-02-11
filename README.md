@@ -129,6 +129,20 @@ think of any improvements/enhancements to the pipeline that you could build in?
     parallel manner
     * Refer [Future Work](https://github.com/srivathsapv/dicom-munge#future-work)
 
+### Code Organization
+
+* The main source code is in the `munge` folder which contains the classes. For more information about these modules, refer the
+  documentation
+    - DataElement
+    - DataLoader
+    - Dataset
+    - utils
+        - contour
+        - image
+        - misc
+
+* The tests are in the `tests` folder.
+
 ### Package testing
 To run the tests and generate coverage report, run the following command
 
@@ -144,3 +158,4 @@ Documentation can be found in `build/index.html`
 * More exception handling
 * Data cleaning - Adaptive Histogram Equalization/Mean Normalization
 * Integration with LogDNA for better log monitoring
+* Unit tests are not exhaustive. Just the critical functionality is tested. More coverage can be added in the future.
