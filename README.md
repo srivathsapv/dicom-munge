@@ -1,5 +1,6 @@
 # Munge
 ![travis](https://travis-ci.org/srivathsapv/dicom-munge.svg?branch=master)
+![coverage](https://github.com/srivathsapv/dicom-munge/blob/master/coverage.svg)
 
 ## Module for DICOM data preprocessing and loading
 
