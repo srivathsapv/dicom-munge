@@ -11,7 +11,7 @@ $ conda install --yes --file requirements.txt
 
 2. `config.json`
 Download the data and put it in a directory and make changes to `config.json` accordingly. Currently I have my data in the `data`
-folder and hence the content of the file is:
+(git ignored) folder and hence the content of the file is:
 
 ```
 {
@@ -24,6 +24,7 @@ folder and hence the content of the file is:
 
 ### Part 1: Parsing the DICOM images and Contour Files
 
+#### Usage
 ```
 from munge.Dataset import Dataset
 
@@ -41,10 +42,12 @@ dataset.plot_verification_for_study('SCD0000101')
 1. How did you verify that you are parsing the contours correctly?
 
 **Verification by Unit Tests:**
+
 I have written unit tests which can be found in `tests/test_dataset.py`. Here in the function `test_dcm_contour_mapping()`, I have
 asserted whether, for randomly chosen contours, the right DICOM images are picked or not.
 
 **Manual verification by visualization:**
+
 Even though unit tests make sure that the function is doing what it is supposed to, qualitative verification is important in
 image annotations. For this purpose I have written a function in the `Dataset` class which will plot the images along with
 the contours as patches overlaid on them. For trained sonographers, this gives a quick overview of whether the labelling is
@@ -72,6 +75,7 @@ to verify the annotation and to quickly identify mistakes if any)
 
 ### Part 2: Model training pipeline
 
+#### Usage
 ```
 # continuation of the above snippet
 
@@ -95,16 +99,19 @@ not, is there anything that you can imagine changing in the future?
 2. How do you/did you verify that the pipeline was working correctly?
 
 **Verification by Unit Tests:**
+
 I have written unit tests which can be found in `tests/test_dataloader.py`. Here in the function `test_load_train_data()`, I
 have asserted whether, for the given epoch and batch size, the data is split correctly or not.
 
 **Manual verification of randomness by visualization:**
+
 For this purpose I have written a function in the `DataLoader` class which will randomly select an epoch and plot the batch wise
 images that were split. This will give a visual indicator that the data split is indeed random.
 
 <insert image>
 
 **Manual verification of randomness by log file:**
+
 The call to the function `load_train_data` will write to the log file (`data_loader.log`), the UUID of the `DataElement`
 instance in each epoch, in each iteration. By making sure that the UUIDs are different, we can ensure that the training data
 is random enough to be fed into a network.
@@ -121,7 +128,12 @@ think of any improvements/enhancements to the pipeline that you could build in?
 ```
 $ pytest --cov=munge --cov-report=html tests/
 ```
-HTML coverage report can be found in `htmlcov/index.html`
+HTML coverage report can be found in `htmlcov/index.html`. Currently the code is 93% covered.
 
 ### Auto generated documentation using Sphinx
 Documentation can be found in `build/index.html`
+
+### Future Work
+* More exception handling
+* Data cleaning - Adaptive Histogram Equalization/Mean Normalization
+* Integration with LogDNA for better log monitoring
