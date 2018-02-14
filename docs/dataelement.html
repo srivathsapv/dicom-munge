@@ -46,7 +46,7 @@
 <p>Class to represent a data point in the dataset with relevant features and methods</p>
 <dl class="class">
 <dt id="munge.DataElement.DataElement">
-<em class="property">class </em><code class="descclassname">munge.DataElement.</code><code class="descname">DataElement</code><span class="sig-paren">(</span><em>dicom_path</em>, <em>icontour_path</em><span class="sig-paren">)</span><a class="headerlink" href="#munge.DataElement.DataElement" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">munge.DataElement.</code><code class="descname">DataElement</code><span class="sig-paren">(</span><em>dicom_path</em>, <em>icontour_path</em>, <em>ocontour_path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#munge.DataElement.DataElement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>DataElement class can be instantiated with the following args</p>
 <ul class="simple">
@@ -80,8 +80,8 @@
 
 <dl class="method">
 <dt id="munge.DataElement.DataElement.get_area_in_sqmm">
-<code class="descname">get_area_in_sqmm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#munge.DataElement.DataElement.get_area_in_sqmm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the area of the contour in sq.mm. The conversion is done using the <code class="docutils literal"><span class="pre">PixelSpacing</span></code> tag of the DICOM image.</p>
+<code class="descname">get_area_in_sqmm</code><span class="sig-paren">(</span><em>roi='icontour'</em><span class="sig-paren">)</span><a class="headerlink" href="#munge.DataElement.DataElement.get_area_in_sqmm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the area of the ROI in sq.mm. The conversion is done using the <code class="docutils literal"><span class="pre">PixelSpacing</span></code> tag of the DICOM image.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -93,9 +93,31 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="munge.DataElement.DataElement.get_image_contour_overlay">
-<code class="descname">get_image_contour_overlay</code><span class="sig-paren">(</span><em>window=30, patch_color=[255, 0, 0]</em><span class="sig-paren">)</span><a class="headerlink" href="#munge.DataElement.DataElement.get_image_contour_overlay" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets a bounding box around the contour with and without the contour overlaid (horizontally stacked).
+<dt id="munge.DataElement.DataElement.get_image_icontour_overlay">
+<code class="descname">get_image_icontour_overlay</code><span class="sig-paren">(</span><em>window=30, patch_color=[255, 0, 0]</em><span class="sig-paren">)</span><a class="headerlink" href="#munge.DataElement.DataElement.get_image_icontour_overlay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a bounding box around the inner contour with and without the i-contour overlaid (horizontally stacked).
+This will be useful for manual verification of the annotation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>window</strong> – size of bounding box required around the marked contour</li>
+<li><strong>patch_color</strong> – [r, g, b] value of the color in which the patch should be overlaid</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">horizontally stacked array with left image being original and the right with the patch drawn</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="munge.DataElement.DataElement.get_image_ocontour_overlay">
+<code class="descname">get_image_ocontour_overlay</code><span class="sig-paren">(</span><em>window=30, patch_color=[255, 0, 0]</em><span class="sig-paren">)</span><a class="headerlink" href="#munge.DataElement.DataElement.get_image_ocontour_overlay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a bounding box around the outer contour with and without the o-contour overlaid (horizontally stacked).
 This will be useful for manual verification of the annotation</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -116,7 +138,7 @@ This will be useful for manual verification of the annotation</p>
 
 <dl class="method">
 <dt id="munge.DataElement.DataElement.get_roi_avg_relative_intensity">
-<code class="descname">get_roi_avg_relative_intensity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#munge.DataElement.DataElement.get_roi_avg_relative_intensity" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_roi_avg_relative_intensity</code><span class="sig-paren">(</span><em>roi='icontour'</em><span class="sig-paren">)</span><a class="headerlink" href="#munge.DataElement.DataElement.get_roi_avg_relative_intensity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the relative intensity (%) of the ROI. Relative intensity is w.r.t the maximum intensity of the image</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

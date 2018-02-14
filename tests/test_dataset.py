@@ -42,5 +42,5 @@ def test_get_by_study():
 
 def test_plot_for_study():
     plot_path = 'tests/tmp/plot.png'
-    dataset.plot_verification_for_study('SCD0000301', plot_path)
+    dataset.plot_verification_for_study('SCD0000501', plot_path)
     assert Path(plot_path).is_file()
