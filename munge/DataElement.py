@@ -14,19 +14,21 @@ class DataElement(object):
     :type contour_path: string
     """
 
-    def __init__(self, dicom_path, contour_path):
+    def __init__(self, dicom_path, icontour_path):
         self.id = misc.get_uuid()
 
         self.dcm_path = dicom_path
-        self.contour_path = contour_path
+        self.icontour_path = icontour_path
+        #self.ocontour_path = ocontour_path
 
-        self.dcm_num = contour.get_dcm_num_for_contour(self.contour_path)
+        self.dcm_num = contour.get_dcm_num_for_contour(self.icontour_path)
 
         self.dcm_image = image.parse_dicom_file(self.dcm_path)
         self.image = self.dcm_image['pixel_data']
 
-        self.contour = contour.parse_contour_file(self.contour_path)
-        self.target = contour.poly_to_mask(self.contour, self.dcm_image['width'], self.dcm_image['height'])
+        self.icontour = contour.parse_contour_file(self.icontour_path)
+
+        self.target = contour.poly_to_mask(self.icontour, self.dcm_image['width'], self.dcm_image['height'])
 
     def asarray(self):
         """
@@ -48,8 +50,8 @@ class DataElement(object):
         width, height = [self.dcm_image['width'], self.dcm_image['height']]
         data_rgb = image.grayscale_to_rgb(self.image)
 
-        x_values = [c[0] for c in self.contour]
-        y_values = [c[1] for c in self.contour]
+        x_values = [c[0] for c in self.icontour]
+        y_values = [c[1] for c in self.icontour]
 
         min_x = int(min(x_values)) - window
         max_x = int(max(x_values)) + window
@@ -76,10 +78,10 @@ class DataElement(object):
     def get_area_in_sqmm(self):
         """
         Gets the area of the contour in sq.mm. The conversion is done using the ``PixelSpacing`` tag of the DICOM image.
-        
+
         :return: area in sq.mm
         """
-        area_in_pixels = len(self.contour)
+        area_in_pixels = len(self.icontour)
 
         res_x, res_y = self.dcm_image['resolution']
         conversion_factor = (res_x * res_y)

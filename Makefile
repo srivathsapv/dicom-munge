@@ -5,8 +5,8 @@
 SPHINXOPTS    =
 SPHINXBUILD   = python -msphinx
 SPHINXPROJ    = Munge
-SOURCEDIR     = source
-BUILDDIR      = build
+SOURCEDIR     = _source
+BUILDDIR      = docs
 
 # Put it first so that "make" without argument is like "make help".
 help:
