@@ -48,6 +48,7 @@
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#G"><strong>G</strong></a>
+ | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#O"><strong>O</strong></a>
@@ -80,11 +81,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="dataelement.html#munge.DataElement.DataElement">DataElement (class in munge.DataElement)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="dataloader.html#munge.DataLoader.DataLoader">DataLoader (class in munge.DataLoader)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="dataset.html#munge.Dataset.Dataset">Dataset (class in munge.Dataset)</a>
+</li>
+      <li><a href="imagethresholder.html#munge.ImageThresholder.ImageThresholder.dilate">dilate() (munge.ImageThresholder.ImageThresholder method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -104,21 +107,33 @@
 </li>
       <li><a href="utils.html#munge.utils.contour.get_dcm_num_for_contour">get_dcm_num_for_contour() (in module munge.utils.contour)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="utils.html#munge.utils.image.get_dcm_resolution">get_dcm_resolution() (in module munge.utils.image)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="dataelement.html#munge.DataElement.DataElement.get_image_icontour_overlay">get_image_icontour_overlay() (munge.DataElement.DataElement method)</a>
 </li>
       <li><a href="dataelement.html#munge.DataElement.DataElement.get_image_ocontour_overlay">get_image_ocontour_overlay() (munge.DataElement.DataElement method)</a>
+</li>
+      <li><a href="imagethresholder.html#munge.ImageThresholder.ImageThresholder.get_jaccard_coeff">get_jaccard_coeff() (munge.ImageThresholder.ImageThresholder method)</a>
 </li>
       <li><a href="utils.html#munge.utils.misc.get_ocontour_for_icontour">get_ocontour_for_icontour() (in module munge.utils.misc)</a>
 </li>
       <li><a href="dataelement.html#munge.DataElement.DataElement.get_roi_avg_relative_intensity">get_roi_avg_relative_intensity() (munge.DataElement.DataElement method)</a>
 </li>
+      <li><a href="imagethresholder.html#munge.ImageThresholder.ImageThresholder.get_thresholded_contour_mask">get_thresholded_contour_mask() (munge.ImageThresholder.ImageThresholder method)</a>
+</li>
       <li><a href="utils.html#munge.utils.misc.get_uuid">get_uuid() (in module munge.utils.misc)</a>
 </li>
       <li><a href="utils.html#munge.utils.image.grayscale_to_rgb">grayscale_to_rgb() (in module munge.utils.image)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="imagethresholder.html#munge.ImageThresholder.ImageThresholder">ImageThresholder (class in munge.ImageThresholder)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -142,6 +157,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="imagethresholder.html#module-munge.ImageThresholder">munge.ImageThresholder (module)</a>
+</li>
       <li><a href="utils.html#module-munge.utils.contour">munge.utils.contour (module)</a>
 </li>
       <li><a href="utils.html#module-munge.utils.image">munge.utils.image (module)</a>
@@ -166,9 +183,13 @@
 </li>
       <li><a href="utils.html#munge.utils.image.parse_dicom_file">parse_dicom_file() (in module munge.utils.image)</a>
 </li>
+      <li><a href="imagethresholder.html#munge.ImageThresholder.ImageThresholder.plot_model_fit">plot_model_fit() (munge.ImageThresholder.ImageThresholder method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="dataloader.html#munge.DataLoader.DataLoader.plot_random_epoch">plot_random_epoch() (munge.DataLoader.DataLoader static method)</a>
+</li>
+      <li><a href="imagethresholder.html#munge.ImageThresholder.ImageThresholder.plot_thresholding_result">plot_thresholding_result() (munge.ImageThresholder.ImageThresholder method)</a>
 </li>
       <li><a href="dataset.html#munge.Dataset.Dataset.plot_verification_for_study">plot_verification_for_study() (munge.Dataset.Dataset method)</a>
 </li>
@@ -207,6 +228,7 @@
 <li class="toctree-l1"><a class="reference internal" href="dataset.html">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dataelement.html">DataElement</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dataloader.html">DataLoader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imagethresholder.html">ImageThresholder</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">Utils</a></li>
 </ul>
 

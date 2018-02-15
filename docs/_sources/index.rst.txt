@@ -13,9 +13,9 @@ Welcome to Munge's documentation!
    dataset
    dataelement
    dataloader
+   imagethresholder
    utils
-
-
+   
 Indices and tables
 ==================
 
