@@ -1,5 +1,7 @@
 """Class to represent a data point in the dataset with relevant features and methods"""
 import numpy as np
+import matplotlib.pyplot as plt
+import os
 
 from .utils import contour, image, misc
 
@@ -29,7 +31,9 @@ class DataElement(object):
         self.icontour = contour.parse_contour_file(self.icontour_path)
         self.target = contour.poly_to_mask(self.icontour, self.dcm_image['width'], self.dcm_image['height'])
 
-        if self.ocontour_path:
+        self.ocontour = None
+        self.ocontour_mask = None
+        if self.ocontour_path and os.path.exists(self.ocontour_path):
             self.ocontour = contour.parse_contour_file(self.ocontour_path)
             self.ocontour_mask = contour.poly_to_mask(self.ocontour, self.dcm_image['width'], self.dcm_image['height'])
 
@@ -66,19 +70,37 @@ class DataElement(object):
         return self._get_overlay_for_contour(self.ocontour, self.ocontour_mask, window, patch_color)
 
     def _get_overlay_for_contour(self, contour, mask, window, patch_color):
-        width, height = [self.dcm_image['width'], self.dcm_image['height']]
         data_rgb = image.grayscale_to_rgb(self.image)
 
-        x_values = [c[0] for c in contour]
-        y_values = [c[1] for c in contour]
-
-        min_x = int(min(x_values)) - window
-        max_x = int(max(x_values)) + window
-        min_y = int(min(y_values)) - window
-        max_y = int(max(y_values)) + window
+        min_x, max_x, min_y, max_y = misc.get_bounding_box_coords(contour, window)
 
         data_copy = np.array(data_rgb, copy=True)
         data_copy[mask] = patch_color
+
+        data_cutout = data_copy[min_x:max_x, min_y:max_y]
+        data_original = data_rgb[min_x:max_x, min_y:max_y]
+
+        final_image = [data_original, data_cutout]
+        return np.hstack(final_image)
+
+    def overlay_contours(self, window=30, patch_colors=[[0, 0, 255], [255, 0, 0]]):
+        """
+        Overlays both inner and outer contours for visualization
+
+        :param window: Bounding box window size around the ROI
+        :param patch_colors: Array of colors for the outer and inner contours
+        """
+        if not self.ocontour:
+            raise AttributeError('The current DataElement does not have an ocontour')
+
+        outer_color, inner_color = patch_colors
+        min_x, max_x, min_y, max_y = misc.get_bounding_box_coords(self.ocontour, window)
+
+        data_rgb = image.grayscale_to_rgb(self.image)
+        data_copy = np.array(data_rgb, copy=True)
+
+        data_copy[self.ocontour_mask] = outer_color
+        data_copy[self.target] = inner_color
 
         data_cutout = data_copy[min_x:max_x, min_y:max_y]
         data_original = data_rgb[min_x:max_x, min_y:max_y]

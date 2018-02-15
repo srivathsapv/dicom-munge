@@ -47,6 +47,13 @@ def get_dcm_resolution(dcm_img):
     pixel_spacing = dcm_img.data_element('PixelSpacing').value
     return [float(pixel_spacing[0]), float(pixel_spacing[1])]
 
-def grayscale_to_rgb(img):
+def grayscale_to_rgb(img_raw):
+    """
+    Converts the given grayscale image to a three channel image
+
+    :param img_raw: the raw grayscale image
+    :return: 3 Channel RGB image
+    """
+    img = img_raw.copy()
     img.resize((img.shape[0], img.shape[1], 1))
     return np.repeat(img.astype(np.uint8), 3, 2)

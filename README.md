@@ -29,139 +29,117 @@ Download the data and put it in a directory and make changes to `config.json` ac
 ### Jupyter Notebook
 
 The usage of the package is easily illustrated in [this](https://github.com/srivathsapv/dicom-munge/blob/master/Usage.ipynb)
-Jupyter Notebook. Detailed explanation is also given below.
+Jupyter Notebook. Detailed explanation is also given here in [Phase 1
+Solutions](https://github.com/srivathsapv/dicom-munge/wiki/Phase-1-Answers).
 
-### Part 1: Parsing the DICOM images and Contour Files
 
-#### Usage
-```
-from munge.Dataset import Dataset
+### Part 1: Parse the _o-contours_
 
-dataset = Dataset('config.json')
+* Modified `Dataset` class `get_all` and `get_by_study` methods to get the `o-contour` for each image if it exists
+* Modified `DataElement` class to accept the optional argument of `o-contour` while constructing
+* Added `overlay_contours` method to `DataElement` to view both contours at the same time
+* Did not make any change to `DataLoader` class, assuming that the primary label for the ML training pipeline will be the
+i-contours
 
-all_data = dataset.get_all() # contains all images with its corresponding contours
-study_data = dataset.get_by_study('SCD0000101') # contains the images and corresponding contours for the given study
+### Part 2: Heuristic LV Segmentation approaches
 
-# plots the verification for the given study
-dataset.plot_verification_for_study('SCD0000101')
-```
+This [jupyter notebook](https://github.com/srivathsapv/dicom-munge/blob/master/Thresholding.ipynb) has all the code samples that
+were used to generate the below figures and to do the operations described below.
 
-#### Explanation
+#### Analysis of the O-Contour Histogram
 
-1. How did you verify that you are parsing the contours correctly?
+![image_hist1](https://user-images.githubusercontent.com/1017519/36243640-87670886-11f0-11e8-9132-dd6abd6e07c3.png)
 
-**Verification by Unit Tests:**
+Looking at the above histogram of the o-contour of the image (SCD0000101/59.dcm) we can see that it is a bi-modal distribution
+with took peaks corresponding to low intensity and high intensity regions respectively. Looking at the data, it is obvious that
+we are interested only in the high intensity region. So we should automatically choose a threshold that will retain only the high
+intensity pixels.
 
-I have written unit tests which can be found in `tests/test_dataset.py`. Here in the function `test_dcm_contour_mapping()`, I have
-asserted whether, for randomly chosen contours, the right DICOM images are picked or not.
+![image_hist2](https://user-images.githubusercontent.com/1017519/36243645-8b12e82e-11f0-11e8-8ecc-fa26a66b7bfa.png)
 
-**Manual verification by visualization:**
+It is not always the case that the o-contour histogram is bi-modal in nature. Some times the image has low intensity (black),
+medium intensity (gray) and high intensity (white) pixels thus having a tri-modal nature like the one shown above
+(SCD0000201/80.dcm). In this case we should choose a threshold that will retain the medium and the high intensity pixels because
+in most of the cases the i-contour region is comprised of medium and high intensity pixels and the region between o-contour and
+i-contour mostly has low intensity pixels.
 
-Even though unit tests make sure that the function is doing what it is supposed to, qualitative verification is important in
-image annotations. For this purpose I have written a function in the `Dataset` class which will plot the images along with
-the contours as patches overlaid on them. For trained sonographers, this gives a quick overview of whether the labelling is
-correct or not.
+#### Fitting a Gaussian Mixture Model to the histogram
 
-Apart from the images, I have also included two plots
-1. **Relative average intensity**: This will give a rough indicator of whether the region marked is correct or not assuming that
-in this case, the average intensity of the myocardium area should lie in some range. If the average intensity does not lie in
-this assumed range, we can suspect that the annotater has marked it incorrectly.
-2. **Area of contour in sq.mm**: As each study is a time series, contraction/dilation of the valve can be confirmed with a
-sinusoidal/semi-sinusoidal wave. If the marked area is wrong, we can find out using this plot.
+Looking at the above histograms, it is obvious that they are distributions comprising of a mixture of gaussians. Hence we can
+fit a Gaussian Mixture Model (GMM) to the histogram to automatically choose the optimum threshold value for that image. This
+threshold is chosen as,
+    * The average of the gaussians' means in case of a bi-modal distribution (this is the point where the two curves cross -
+      refer figure below)
+    * The average of the first two gaussians' means in case of a tri-modal distribution
 
-(The above plots are included just as a sample to make a point that, some medical information like these can be incorporated
-to verify the annotation and to quickly identify mistakes if any)
+The below figures show the histograms along with the gaussians that were used to fit and the chosen threshold value.
 
-![verification](https://user-images.githubusercontent.com/1017519/36071843-307ce492-0ee3-11e8-82ec-ca41fb2a0a9a.png)
+**Bi-modal GMM Fit**
+[!gmm1](https://user-images.githubusercontent.com/1017519/36243997-5f6dfeaa-11f2-11e8-81b5-689f0f61eac3.png)
 
-2. What changes did you make to the code, if any, in order to integrate it into our production code base?
+**Tri-modal GMM Fit**
+[!gmm2](https://user-images.githubusercontent.com/1017519/36244001-60a4a896-11f2-11e8-9e07-72eb9d4e0e3f.png)
 
-* Modified the given `parse_dicom_file` function to include `width`, `height` and `resolution` in the return value
-* Moved the `parse_dicom_file` to `utils/image.py` for better organization
-* Moved the given `parse_contour_file` and `poly_to_mask` functions to `utils/contour.py` for better organization
-* Wrote a `DataElement` class to abstract each data point in the dataset (for more details refer documentation)
-* Wrote a `Dataset` class to load the dataset with the dicom->contour mapping (for more details refer documentation)
+#### Finding the i-contour by simple thresholding
 
-### Part 2: Model training pipeline
+Once the threshold has been automatically found out by fitting a GMM model, we do simple thresholding on the o-contour region i.e
+set all pixels greater than the threshold value to `white` and all other pixels `black`. Then we get the co-ordinates
+of these `white` pixels which is nothing but the detected `i-contour`.
 
-#### Usage
-```
-# continuation of the above snippet
+#### Qualitative evaluation - Visualization
 
-from munge.DataLoader import DataLoader
+Once we have the detected `i-contour`, we can overlay this with the ground truth `i-contour` and look at the image to
+qualitatively assess the performance of the segmentation. One such visualization is shown below.
 
-data_loader = DataLoader(dataset)
-train_data = data_loader.load_train_data(epochs=10, batch_size=8)
-# train_data contains the dataset split into batch_size for each epoch
+![overlay](https://user-images.githubusercontent.com/1017519/36244323-c398cd46-11f3-11e8-922b-1d0ab7156384.png)
 
-DataLoader.plot_random_epoch(train_data)
-```
+#### Quantitative evaluation - Jaccard Coefficient
 
-#### Explanation
+[Jaccard Coefficient or Jaccard Index](https://en.wikipedia.org/wiki/Jaccard_index) is a widely used metric to measure the
+performance of segmentation. Below is the overlay visualization along with the jaccard coefficient metric. For the first
+image, the metric is 0.908, which shows that it is a very good prediction. For the Second image, the metric is 0.728, which
+shows that it is not a great prediction and there is room for improvement.
 
-1. Did you change anything from the pipelines built in Parts 1 to better streamline the pipeline built in Part 2? If so, what? If
-not, is there anything that you can imagine changing in the future?
+![jaccard1](https://user-images.githubusercontent.com/1017519/36244692-44306bde-11f5-11e8-881c-f3702242334c.png)
+![jaccard2](https://user-images.githubusercontent.com/1017519/36245170-d7cc3736-11f7-11e8-9bc2-9f0d0f0da7fc.png)
 
-* Added `DataLoader` class to load the dataset according to epochs and batch size (for more details refer documentation)
-* Refer [Future Work](https://github.com/srivathsapv/dicom-munge#future-work)
+#### Final comments on simple thresholding
 
-2. How do you/did you verify that the pipeline was working correctly?
+From the above results and discussions, it is evident that a simple thresholding scheme is very much possible to do
+segmentation but that alone would not suffice when the images have _salt and pepper_ noise and poorly defined boundaries and
+intensity differences. For example, the performance of the above scheme purely depends on how well separated the region
+intensities are, which might not be the case always.
 
-**Verification by Unit Tests:**
+#### Alternate methods
 
-I have written unit tests which can be found in `tests/test_dataloader.py`. Here in the function `test_load_train_data()`, I
-have asserted whether, for the given epoch and batch size, the data is split correctly or not.
+1. **Morphological Operations and Connected Components**:
+In the first image below, we see tiny speckles in the predicted contour and also minor cracks in the boundary of the detected
+contour region. The tiny speckles can be removed by the morphological operation `erosion` and the cracks can be filled
+by the morphological operation `dilation`.
 
-**Manual verification of randomness by visualization:**
+From the below two images we can see that dilation has improved the jaccard score from 0.728 to 0.826. Here I have dilated
+using a disk shaped structural element with an arbitrary radius of 3.
 
-For this purpose I have written a function in the `DataLoader` class which will randomly select an epoch and plot the batch wise
-images that were split. This will give a visual indicator that the data split is indeed random.
+**Before Dilation**:
+![dilation1](https://user-images.githubusercontent.com/1017519/36245170-d7cc3736-11f7-11e8-9bc2-9f0d0f0da7fc.png)
 
-![verification](https://user-images.githubusercontent.com/1017519/36071845-34fd66e0-0ee3-11e8-9850-3824e4ab7573.png)
+**After Dilation**:
+![dilation2](https://user-images.githubusercontent.com/1017519/36245360-be1bef88-11f8-11e8-86f7-4fc5dbf57bce.png)
 
-**Manual verification of randomness by log file:**
+After dilation we can further erode the image to get rid of tiny speckles and finally do [connected
+components](http://scikit-image.org/docs/dev/api/skimage.measure.html#skimage.measure.label) to find the `i-contour` region.
 
-The call to the function `load_train_data` will write to the [log file](https://github.com/srivathsapv/dicom-munge/blob/master/data_loader.log), the UUID of the `DataElement`
-instance in each epoch, in each iteration. By making sure that the UUIDs are different, we can ensure that the training data
-is random enough to be fed into a network.
-
-3. Given the pipeline you have built, can you see any deficiencies that you would change if you had more time? If not, can you
-think of any improvements/enhancements to the pipeline that you could build in?
-    * Could have used open source code for generating the splits. Tried `keras.preprocessing.image.ImageDataGenerator` but in our
-    case the data points are instances of `DataElement`, which the class could not handle
-    * Even though I have used `yield` wherever possible, for huge datasets, need to refactor the code such that it works in a
-    parallel manner
-    * Refer [Future Work](https://github.com/srivathsapv/dicom-munge#future-work)
-
-### Code Organization
-
-* The main source code is in the `munge` folder which contains the classes. For more information about these modules, refer the
-  documentation
-    - DataElement
-    - DataLoader
-    - Dataset
-    - utils
-        - contour
-        - image
-        - misc
-
-* The tests are in the `tests` folder.
-
-### Package testing
-To run the tests and generate coverage report, run the following command
-
-```
-$ pytest --cov=munge --cov-report=html tests/
-```
-HTML coverage report can be found in `htmlcov/index.html`. Currently the code is 93% covered.
+2. **Scale Invariant Feature Transform (SIFT):**
+Apart from using raw intensities as heuristic, we can do smarter by detecting local features like edges and disks using SIFT
+operations. Using SIFT we can also do key point detection and description to localize the `i-contour` region.
 
 ### Auto generated documentation using Sphinx
 Documentation can be found [here](http://dicom-munge.readthedocs.io/en/latest/).
 
 ### Future Work
-* More exception handling
-* Performance testing
-* Data cleaning - Adaptive Histogram Equalization/Mean Normalization
-* Integration with LogDNA for better log monitoring
-* Unit tests are not exhaustive. Just the critical functionality is tested. More coverage can be added in the future.
-* Dockerize the app
+* Improve GMM by automatically finding the modality (bi-modal or tri-modal) of the image either by using Bayesian Information
+Criterion(BIC) or Akaike Information Criterion (AIC) or some other metric.
+* The threshold is currently chosen by taking average of the two gaussians. This will be incorrect when the two gaussians have
+different standard deviations. So instead take weighted average to compute the threshold.
+* Currently dilation is being done using a disk-shaped structural element of arbitrary radius 3. This radius can be decided
+based on the radius of the annotated `o-contour` region.

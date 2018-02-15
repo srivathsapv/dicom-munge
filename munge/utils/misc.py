@@ -4,6 +4,10 @@ import uuid
 import csv
 import os
 
+import numpy as np
+from sklearn.mixture import GaussianMixture
+from scipy.stats import norm
+
 def get_app_config(config_file):
     """
     Gets the application configuration as a dict from the given file
@@ -44,3 +48,21 @@ def get_ocontour_for_icontour(icontour_file, ocontour_dir):
 
     ocontour_path = ocontour_dir + icontour_file.replace('icontour', 'ocontour')
     return ocontour_path if os.path.exists(ocontour_path) else None
+
+def get_bounding_box_coords(contour, window=30):
+    """
+    Given a contour and window, get the min and max co-ordinates of a bounding box around that window
+
+    :param contour: Array of co-ordinates defining the contour
+    :param window: The window size of the bounding box
+    :return: min_x, max_x, min_y and max_y of the bounding box
+    """
+    x_values = [c[0] for c in contour]
+    y_values = [c[1] for c in contour]
+
+    min_x = int(min(x_values)) - window
+    max_x = int(max(x_values)) + window
+    min_y = int(min(y_values)) - window
+    max_y = int(max(y_values)) + window
+
+    return [min_x, max_x, min_y, max_y]
