@@ -68,6 +68,7 @@ i-contour mostly has low intensity pixels.
 Looking at the above histograms, it is obvious that they are distributions comprising of a mixture of gaussians. Hence we can
 fit a Gaussian Mixture Model (GMM) to the histogram to automatically choose the optimum threshold value for that image. This
 threshold is chosen as,
+
     * The average of the gaussians' means in case of a bi-modal distribution (this is the point where the two curves cross -
       refer figure below)
     * The average of the first two gaussians' means in case of a tri-modal distribution
