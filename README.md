@@ -69,9 +69,9 @@ Looking at the above histograms, it is obvious that they are distributions compr
 fit a Gaussian Mixture Model (GMM) to the histogram to automatically choose the optimum threshold value for that image. This
 threshold is chosen as,
 
-    * The average of the gaussians' means in case of a bi-modal distribution (this is the point where the two curves cross -
-      refer figure below)
-    * The average of the first two gaussians' means in case of a tri-modal distribution
+* The average of the gaussians' means in case of a bi-modal distribution (this is the point where the two curves cross -
+  refer figure below)
+* The average of the first two gaussians' means in case of a tri-modal distribution
 
 The below figures show the histograms along with the gaussians that were used to fit and the chosen threshold value.
 
