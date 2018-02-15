@@ -16,7 +16,7 @@ class DataLoader(object):
 
     def load_train_data(self, epochs=10, batch_size=8, log_file='data_loader.log'):
         """
-        Returns an array of ``DataElement``s split into batches and epochs
+        Returns an array of ``DataElement`` instances split into batches and epochs
 
         :param epochs: number of epochs needed
         :param batch_size: number of images to be used per batch
@@ -64,7 +64,7 @@ class DataLoader(object):
         epoch_data = data[np.random.randint(0, epoch_size)]
 
         imgs = []
-        
+
         for iter_images in epoch_data:
             x_batch = [iter_img for iter_img in iter_images]
             clips = [i.image for i in x_batch]

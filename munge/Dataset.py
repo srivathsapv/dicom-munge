@@ -28,11 +28,11 @@ class Dataset(object):
         dataset = []
 
         for mapping in list(self._get_all_mapping(self.config['link_file_path'])):
-            print(mapping)
             dicom_path = mapping['dicom_path']
-            contour_path = mapping['contour_path']
+            icontour_path = mapping['icontour_path']
+            ocontour_path = mapping['ocontour_path']
 
-            dataset.append(DataElement(dicom_path, contour_path))
+            dataset.append(DataElement(dicom_path, icontour_path, ocontour_path))
 
         self.current_dataset = dataset
         yield from dataset
@@ -63,24 +63,30 @@ class Dataset(object):
 
         for mapping in self._get_mapping_by_study(patient_id, original_id):
             dicom_path = mapping['dicom_path']
-            contour_path = mapping['contour_path']
+            icontour_path = mapping['icontour_path']
+            ocontour_path = mapping['ocontour_path']
 
-            yield DataElement(dicom_path, contour_path)
+            yield DataElement(dicom_path, icontour_path)
 
 
     def _get_mapping_by_study(self, patient_id, original_id):
         """
         For a given study, finds the mapping between the images and the contours
         """
-        contour_dir = self.config['icontour_dir_template'].format(original_id)
+        icontour_dir = self.config['icontour_dir_template'].format(original_id)
+        ocontour_dir = self.config['ocontour_dir_template'].format(original_id)
 
         mapping = []
-        for contour_file in os.listdir(contour_dir):
-            dcm_num = contour.get_dcm_num_for_contour(contour_file)
+        for icontour_file in os.listdir(icontour_dir):
+            dcm_num = contour.get_dcm_num_for_contour(icontour_file)
+
+            icontour_full_path = icontour_dir + icontour_file
+            ocontour_full_path = misc.get_ocontour_for_icontour(icontour_file, ocontour_dir)
 
             yield {
                 'dicom_path': self.config['dicom_path_template'].format(patient_id, dcm_num),
-                'contour_path': contour_dir + contour_file
+                'icontour_path': icontour_full_path,
+                'ocontour_path': ocontour_full_path
             }
 
 
@@ -99,7 +105,7 @@ class Dataset(object):
         study_elements.sort(key=lambda element: element.dcm_num)
 
         for i, data_element in enumerate(study_elements):
-            overlay = data_element.get_image_contour_overlay()
+            overlay = data_element.get_image_icontour_overlay()
 
             ax = fig.add_subplot(rows, columns, i + 1)
             ax.set_title('{}.dcm'.format(data_element.dcm_num))
@@ -153,4 +159,4 @@ class Dataset(object):
         else:
             elements = self.get_all()
 
-        return [{'id': e.id, 'dcm_path': e.dcm_path, 'contour_path': e.contour_path} for e in elements]
+        return [{'id': e.id, 'dcm_path': e.dcm_path, 'icontour_path': e.icontour_path} for e in elements]

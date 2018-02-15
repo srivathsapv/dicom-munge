@@ -20,7 +20,7 @@ def test_dcm_contour_mapping():
     ]
 
     for cfile in contour_files:
-        data_element = [element for element in all_data if element.contour_path == cfile][0]
+        data_element = [element for element in all_data if element.icontour_path == cfile][0]
 
         contour_content = contour.parse_contour_file(cfile)
         mask = contour.poly_to_mask(contour_content, data_element.dcm_image['width'], data_element.dcm_image['height'])
@@ -42,5 +42,5 @@ def test_get_by_study():
 
 def test_plot_for_study():
     plot_path = 'tests/tmp/plot.png'
-    dataset.plot_verification_for_study('SCD0000301', plot_path)
+    dataset.plot_verification_for_study('SCD0000501', plot_path)
     assert Path(plot_path).is_file()
