@@ -75,10 +75,10 @@ threshold is chosen as,
 The below figures show the histograms along with the gaussians that were used to fit and the chosen threshold value.
 
 **Bi-modal GMM Fit**
-[!gmm1](https://user-images.githubusercontent.com/1017519/36243997-5f6dfeaa-11f2-11e8-81b5-689f0f61eac3.png)
+![gmm1](https://user-images.githubusercontent.com/1017519/36243997-5f6dfeaa-11f2-11e8-81b5-689f0f61eac3.png)
 
 **Tri-modal GMM Fit**
-[!gmm2](https://user-images.githubusercontent.com/1017519/36244001-60a4a896-11f2-11e8-9e07-72eb9d4e0e3f.png)
+![gmm2](https://user-images.githubusercontent.com/1017519/36244001-60a4a896-11f2-11e8-9e07-72eb9d4e0e3f.png)
 
 #### Finding the i-contour by simple thresholding
 
