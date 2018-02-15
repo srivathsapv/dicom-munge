@@ -51,7 +51,7 @@ were used to generate the below figures and to do the operations described below
 ![image_hist1](https://user-images.githubusercontent.com/1017519/36243640-87670886-11f0-11e8-9132-dd6abd6e07c3.png)
 
 Looking at the above histogram of the o-contour of the image (SCD0000101/59.dcm) we can see that it is a bi-modal distribution
-with took peaks corresponding to low intensity and high intensity regions respectively. Looking at the data, it is obvious that
+with two peaks corresponding to low intensity and high intensity regions respectively. Looking at the data, it is obvious that
 we are interested only in the high intensity region. So we should automatically choose a threshold that will retain only the high
 intensity pixels.
 
